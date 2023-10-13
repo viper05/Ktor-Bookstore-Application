@@ -9,7 +9,7 @@ import io.ktor.server.routing.*
 
 // Job: Routes different endpoints
 
-fun Application.configureRouting() {
+fun Application.configureRouting(db: BookRepository) {
     routing {
         bookRoutes(BookRepository())
         orderRoutes(OrderRepository())

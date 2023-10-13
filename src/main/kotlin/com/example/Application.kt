@@ -19,7 +19,7 @@ fun Application.module() {
     DataSource.init()
     configureSerialization()
     configureStatusPages()
-    configureRouting()
+    configureRouting(BookRepository())
 
 }
 
