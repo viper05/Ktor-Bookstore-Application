@@ -7,8 +7,8 @@ import io.konform.validation.Validation
 import io.konform.validation.jsonschema.maxLength
 import io.konform.validation.jsonschema.minLength
 import io.konform.validation.jsonschema.minimum
-import io.ktor.http.*
-import io.ktor.server.plugins.requestvalidation.*
+//import io.ktor.http.*
+//import io.ktor.server.plugins.requestvalidation.*
 
 //fun RequestValidationConfig.bookValidation() {
 //    validate<Parameters> { book ->
