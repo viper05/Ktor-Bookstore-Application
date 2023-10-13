@@ -39,6 +39,9 @@ dependencies {
     implementation("org.postgresql","postgresql","42.2.18")
     implementation("com.zaxxer","HikariCP","4.0.3")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.1")
+    implementation("io.ktor:ktor-server-request-validation:$ktor_version")
+    implementation("io.ktor:ktor-server-status-pages:$ktor_version")
+    implementation("io.konform:konform-jvm:0.4.0")
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 

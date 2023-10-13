@@ -1,7 +1,7 @@
 package com.example
 
 import com.example.plugins.*
-import db.connection.BookRepository
+import db.repositories.BookRepository
 
 import db.connection.DataSource
 import io.ktor.server.application.*
@@ -18,7 +18,8 @@ fun main() {
 fun Application.module() {
     DataSource.init()
     configureSerialization()
-    configureRouting(BookRepository())
+    configureStatusPages()
+    configureRouting()
 
 }
 

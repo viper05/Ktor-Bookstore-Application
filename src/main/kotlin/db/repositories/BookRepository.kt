@@ -1,9 +1,9 @@
-package db.connection
+package db.repositories
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import data.Book
-import data.BookTable
+import data.book.Book
+import data.book.BookTable
 import data.dao.BookDao
+import db.connection.DataSource
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.statements.InsertStatement
 
@@ -12,24 +12,23 @@ fun rowToBook(row: ResultRow): Book {
         bookId = row[BookTable.bookId],
         title = row[BookTable.title],
         author = row[BookTable.author],
-        price = row[BookTable.price]
-
+        price = row[BookTable.price],
+        quantity = row[BookTable.quantity]
     )
-
 }
 
-class BookRepository: BookDao {
-    override suspend fun insert(title: String, author: String, price: Int): Book? {
+open class BookRepository: BookDao {
+    override suspend fun insertAndGetId(title: String, author: String, price: Int, quantity: Int): Int? {
         var statement: InsertStatement<Number>?=null
         DataSource.dbQuery {
-            statement = BookTable.insert{ book ->
+            statement = BookTable.insert { book ->
                 book[BookTable.title] = title
                 book[BookTable.author] = author
                 book[BookTable.price] = price
+                book[BookTable.quantity] = quantity
             }
-
         }
-        return statement?.resultedValues?.let { rowToBook(it.get(0)) }
+        return statement?.get(BookTable.bookId)
 
     }
 
@@ -42,7 +41,7 @@ class BookRepository: BookDao {
 
     override suspend fun getBookById(bookId: Int): Book? =
         DataSource.dbQuery {
-            BookTable.select{BookTable.bookId.eq(bookId)}.map {
+            BookTable.select { BookTable.bookId.eq(bookId) }.map {
                 rowToBook(it)
 
             }.singleOrNull()
@@ -54,13 +53,14 @@ class BookRepository: BookDao {
         }
 
 
-    override suspend fun update(bookId: Int, title: String, author: String, price: Int): Int =
+    override suspend fun updateById(bookId: Int, title: String, author: String, price: Int, quantity: Int): Int =
         DataSource.dbQuery {
-            BookTable.update ({BookTable.bookId.eq(bookId)}) {book->
+            BookTable.update({ BookTable.bookId.eq(bookId) }) { book ->
                 book[BookTable.title] = title
                 book[BookTable.author] = author
                 book[BookTable.price] = price
-        }
+                book[BookTable.quantity] = quantity
+            }
 
-    }
+        }
 }

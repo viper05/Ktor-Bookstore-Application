@@ -2,7 +2,8 @@ package db.connection
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import data.BookTable
+import data.book.BookTable
+import data.order.OrderTable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.Database
@@ -14,6 +15,7 @@ object DataSource {
         Database.connect(hikari())
         transaction {
             SchemaUtils.create(BookTable)
+            SchemaUtils.create(OrderTable)
         }
     }
 
@@ -28,6 +30,7 @@ object DataSource {
 
         return HikariDataSource(config)
     }
+
 
     suspend fun <T> dbQuery(block: () -> T): T =
         withContext(Dispatchers.IO) {
